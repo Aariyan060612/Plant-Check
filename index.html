@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#19372a">
+    <meta name="description" content="Take a plant photo and get a clear, simple next step.">
+    <title>Plant Check</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell" aria-label="Plant Check">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="presentation">
+              <path d="M13.4 25.5c-1.1-7.7 2.1-14 12-17-1.3 9-5.6 14.5-12 17Z"/>
+              <path d="M13.4 25.5c2.5-5.1 6.2-9.5 12-17"/>
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <span class="brand-name">Plant Check</span>
+            <span class="brand-subtitle">A simple way to check a plant</span>
+          </span>
+        </div>
+        <div class="ready-badge" role="status" aria-live="polite">
+          <span class="status-dot" id="header-dot"></span>
+          <span id="header-status">Ready for a photo</span>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Plant photo and result">
+        <section class="panel photo-panel" aria-labelledby="photo-heading">
+          <div class="panel-heading">
+            <span class="step-number" aria-hidden="true">1</span>
+            <div>
+              <h1 id="photo-heading">Add a plant photo</h1>
+              <p>Choose one plant. Keep it in good light.</p>
+            </div>
+          </div>
+
+          <div class="photo-stage" id="photo-stage">
+            <video id="camera-video" autoplay muted playsinline hidden aria-label="Live camera view"></video>
+            <img id="photo-preview" alt="Selected plant photo" hidden>
+            <div class="photo-empty" id="photo-empty">
+              <span class="plant-symbol" aria-hidden="true">
+                <svg viewBox="0 0 52 64" role="presentation">
+                  <path d="M26 39V7M26 27C18 14 9 15 5 17c2 9 9 14 21 10M27 20C35 8 44 9 48 11c-2 9-9 14-21 11M25 39c-8-8-15-7-19-4 3 8 10 11 19 6m3-1c7-8 14-7 18-4-3 8-10 11-18 6M15 48h22m-19 0v8c0 3 2 5 5 5h8c3 0 5-2 5-5v-8"/>
+                </svg>
+              </span>
+              <strong>Your plant photo will show here</strong>
+              <span>Show one plant clearly in daylight</span>
+            </div>
+          </div>
+          <p class="photo-status" id="photo-status" aria-live="polite">No photo added</p>
+
+          <div class="button-row">
+            <button class="button button-glass" id="camera-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h4l1.5-2h5l1.5 2H20v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+              <span>Turn on camera</span>
+            </button>
+            <button class="button button-glass" id="snap-button" type="button" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="3.5"/></svg>
+              <span>Take photo</span>
+            </button>
+          </div>
+          <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+          <button class="button button-glass button-wide" id="upload-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h7l2 2H20v10H3.5z"/></svg>
+            <span>Choose a photo</span>
+          </button>
+          <button class="button button-primary button-wide" id="check-button" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 17c-.5-5 2-8.5 8.5-10-1 6-4 9-8.5 10Z"/><path d="M8 17c2-3.4 4.8-6.3 8.5-10M18 17h3m-1.5-1.5L21 17l-1.5 1.5"/></svg>
+            <span>Check this plant</span>
+          </button>
+        </section>
+
+        <section class="panel result-panel" aria-labelledby="result-heading">
+          <div class="result-topline">
+            <div>
+              <h2 id="result-heading">Plant result</h2>
+              <p>A clear answer and one next step</p>
+            </div>
+            <span class="result-badge" id="result-badge">Not checked yet</span>
+          </div>
+
+          <div class="report-card" id="report-card" aria-live="polite">
+            <div class="result-empty" id="result-empty">
+              <span class="result-leaf" aria-hidden="true">
+                <svg viewBox="0 0 48 48" role="presentation"><path d="M12 34c1-12 8-20 25-21-1 16-9 23-25 21Z"/><path d="M13 34c6-7 13-14 24-21M7 36c-1-5 1-9 5-12"/></svg>
+              </span>
+              <strong id="empty-title">Ready when you are</strong>
+              <span id="empty-copy">Choose a photo to start the plant check</span>
+              <span class="empty-footnote">Plant name, signs, and care steps will show here</span>
+            </div>
+            <div class="report-content" id="report-content" hidden>
+              <div class="report-summary">
+                <div>
+                  <span class="field-label">Plant type</span>
+                  <strong id="plant-name">Unknown plant</strong>
+                </div>
+                <span class="health-pill" id="health-pill">Not sure yet</span>
+              </div>
+              <div class="score-row">
+                <span class="field-label">How sure this is</span>
+                <strong id="confidence">0%</strong>
+              </div>
+              <div class="report-section">
+                <h3>What I can see</h3>
+                <ul id="sign-list"></ul>
+                <p id="no-signs" class="quiet-copy" hidden>No clear signs could be seen in this photo.</p>
+              </div>
+              <div class="report-section">
+                <h3>Possible reasons</h3>
+                <ul id="cause-list"></ul>
+                <p id="no-causes" class="quiet-copy" hidden>No clear cause could be seen.</p>
+              </div>
+              <div class="report-section">
+                <h3>Options to ask about</h3>
+                <ul id="treatment-list"></ul>
+                <p id="no-treatments" class="quiet-copy" hidden>Ask a local crop helper to suggest a safe option.</p>
+              </div>
+              <div class="next-step-box">
+                <span class="field-label">Next step</span>
+                <p id="next-step"></p>
+              </div>
+              <p class="quality-note" id="quality-note"></p>
+            </div>
+          </div>
+
+          <aside class="safety-note">
+            <span class="note-mark" aria-hidden="true">i</span>
+            <div>
+              <strong>Medicine is not sprayed</strong>
+              <span>This check gives suggestions only. Ask a local crop helper before using medicine.</span>
+            </div>
+          </aside>
+          <button class="button button-glass button-wide save-button" id="save-button" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l3 3v13H5z"/><path d="M8 4v6h9V4M8 20v-7h9v7"/></svg>
+            <span>Save report</span>
+          </button>
+        </section>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
